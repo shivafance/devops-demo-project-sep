@@ -5,22 +5,20 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Building application...'
-
-                sh '''
-                    python3 -m venv venv
-                    venv/bin/pip install -r requirements.txt
-                '''
+                sh 'python3 -m venv venv'
+                sh 'venv/bin/pip install -r requirements.txt'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
+                sh 'venv/bin/python -m py_compile app.py'
+            }
+        }
 
-                sh '''
-                    venv/bin/python -m py_compile app.py
-                '''
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t devops-demo-app:jenkins .'
             }
         }
 
