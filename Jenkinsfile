@@ -1,7 +1,8 @@
 pipeline {
 agent any
 
- stages {
+
+stages {
 
     stage('Build') {
         steps {
@@ -29,12 +30,10 @@ agent any
                 usernameVariable: 'DOCKER_USERNAME',
                 passwordVariable: 'DOCKER_PASSWORD'
             )]) {
-                sh '''
-                    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-                    docker tag devops-demo-app:jenkins $DOCKER_USERNAME/devops-demo-app:jenkins
-                    docker push $DOCKER_USERNAME/devops-demo-app:jenkins
-                    docker logout
-                
+                sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
+                sh 'docker tag devops-demo-app:jenkins $DOCKER_USERNAME/devops-demo-app:jenkins'
+                sh 'docker push $DOCKER_USERNAME/devops-demo-app:jenkins'
+                sh 'docker logout'
             }
         }
     }
