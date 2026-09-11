@@ -1,3 +1,4 @@
+```groovy
 pipeline {
     agent any
 
@@ -22,5 +23,23 @@ pipeline {
             }
         }
 
+        stage('Docker Push') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+                    sh '''
+                        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                        docker tag devops-demo-app:jenkins $DOCKER_USERNAME/devops-demo-app:jenkins
+                        docker push $DOCKER_USERNAME/devops-demo-app:jenkins
+                        docker logout
+                    '''
+                }
+            }
+        }
     }
 }
+```
+
