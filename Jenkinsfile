@@ -26,7 +26,7 @@ stages {
     stage('Docker Push') {
         steps {
             withCredentials([usernamePassword(
-                credentialsId: 'dockerhub-credentials',
+                credentialsId: 'shivafance',
                 usernameVariable: 'DOCKER_USERNAME',
                 passwordVariable: 'DOCKER_PASSWORD'
             )]) {
